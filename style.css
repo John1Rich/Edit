@@ -1,0 +1,288 @@
+* {
+  box-sizing: border-box; /* Это решит проблему с "выталкиванием" видео */
+}
+
+body {
+  /* background-color: #3c3b3b; */
+  /* background-color: rgba(0, 0, 0, 0.77); */
+  /* background-color: #0a0a0c; */
+  background-color: #0d0d0f;
+  color: white;
+  font-family: sans-serif;
+
+  background-image:
+    radial-gradient(at 10% 20%, rgba(138, 43, 226, 0.12) 0px, transparent 40%),
+    radial-gradient(at 90% 10%, rgba(0, 255, 255, 0.08) 0px, transparent 40%),
+    radial-gradient(at 50% 50%, rgba(255, 0, 255, 0.05) 0px, transparent 60%),
+    radial-gradient(at 80% 90%, rgba(75, 0, 130, 0.15) 0px, transparent 40%);
+
+  /* radial-gradient(at 20% 30%, rgba(138, 43, 226, 0.6) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(255, 0, 255, 0.4) 0px, transparent 60%),
+    radial-gradient(at 80% 20%, rgba(75, 0, 130, 0.8) 0px, transparent 45%),
+    radial-gradient(at 10% 80%, rgba(218, 112, 214, 0.5) 0px, transparent 40%),
+    radial-gradient(at 90% 90%, rgba(0, 0, 128, 0.6) 0px, transparent 50%); */
+
+  /* radial-gradient(at 0% 0%, rgba(138, 43, 226, 0.5) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(75, 0, 130, 0.2) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(255, 0, 255, 0.5) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, rgba(0, 128, 255, 0.5) 0px, transparent 50%); */
+
+  /* Чтобы фон не уезжал при скролле */
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Очень тонкий слой шума */
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  /* background-color: #2c2c2c35; */
+  /* background-color: #ffffff; */
+  border-radius: 30px;
+  padding: 20px 40px;
+
+  background-color: rgba(44, 44, 44, 0.35); /* 35% прозрачности достаточно */
+  backdrop-filter: blur(10px); /* Шапка тоже должна «стеклить» */
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.title-top {
+  align-items: center;
+  display: flex;
+  /* text-align: center; */
+}
+
+.icons-top {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 33px;
+  border-radius: 20px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+button {
+  border-radius: 16px;
+}
+
+i {
+  font-size: 1.9rem;
+  padding-top: 5px;
+}
+
+button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  color: white;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #98e7ff;
+  color: #000;
+  transform: scale(1.1);
+}
+/* Контейнер всей галереи */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 30px;
+  padding: 40px;
+  /* background-color: #1a1a1a; */
+}
+
+.home-page,
+.contacts-page {
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  padding: 20px;
+  margin: 40px auto 0;
+
+  border-radius: 20px;
+  /* background-color: #98e7ff2e; */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Контейнер для видео — строгий формат 16/9  */
+.video-container {
+  display: flex;
+  flex-direction: column;
+  position: relative; /* База для абсолютного позиционирования */
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* Общие настройки карточки */
+.video-card {
+  display: flex;
+  flex-direction: column;
+  /* Эффект стекла */
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border-radius: 30px;
+  /* Видео не прилипает к краям карточки*/
+  padding: 25px;
+  overflow: hidden; /* Чтобы видео не вылезало за скругления */
+
+  /* align-items: stretch; */
+
+  /* Оптимизация для плавной анимации */
+  will-change: transform;
+  /* transition: transform 0.3s ease; */
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Контейнер для заголовка и подзаголовка видео */
+.video-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: left;
+  /* padding: 25px 25px 0 25px; */
+  margin-bottom: 20px;
+  /* Гарантирует, что видео под заголовком будут в один ряд */
+  min-height: 90px;
+}
+/* Заголовок */
+.video-header h3 {
+  display: flex;
+  align-items: flex-start;
+  color: #eafaff;
+  font-size: 1.3rem;
+  /* Резервируем место под 2-3 строки текста */
+  min-height: 3.2rem;
+  margin: 0;
+  line-height: 1.2;
+}
+/* Подзаголовок */
+.video-header p {
+  /* color: #98e7ff; */
+  /* color: #eafaffb9; */
+  color: rgba(152, 231, 255, 0.6);
+  /* margin-bottom: 20px; */
+  font-size: 0.9rem;
+  margin-top: 8px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.video-placeholder,
+.video-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  object-fit: cover;
+  /* margin: 0;
+  padding: 0; */
+  /* Отключаем любые попытки скриптов сдвинуть видео */
+  transform: translate(0, 0);
+  border-radius: 20px;
+  border: none;
+
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: #aaa1a1; */
+  /* background-color: #2a2a2a; */
+  background-color: #000;
+  background-size: cover;
+  background-position: center;
+  /* transition: filter 0.3s ease; */
+  transition: all 0.3s ease;
+}
+
+/* .video-card.shorts {
+  max-width: 320px; 
+  justify-self: center; 
+} */
+
+/* Если это Shorts, меняем пропорции контейнера на вертикальные */
+.video-card.shorts .video-container {
+  aspect-ratio: 9 / 16;
+}
+
+.video-frame {
+  display: block; /* Iframe должен быть блочным, а не flex */
+  background-color: #000;
+}
+
+/* Треугольник videoPlaceholder */
+.video-placeholder span {
+  font-size: 60px;
+  color: rgba(255, 255, 255, 0.7);
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Визуальное центрирование треугольника */
+  padding-left: 5px;
+  transition: all 0.3s ease;
+}
+/* Треугольник videoPlaceholder */
+.video-card:hover span {
+  transform: scale(1.08);
+  /* color: #98e7ff; */
+  color: #ffffff;
+}
+
+/* Наведение на карточку */
+.video-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(152, 231, 255, 0.4);
+  /* box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15); */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.video-card:hover .video-placeholder {
+  border-color: #98e7ff;
+  background-color: #333;
+  /* transform: scale(1.02); */
+  /* Легкий подъем карточки */
+  /* transform: translateY(-5px); */
+  /* filter: grayscale(0); */
+}
